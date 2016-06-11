@@ -9,7 +9,17 @@ namespace UserDatabaseService
 {
     public class UserDatabaseService : BaseService.BaseService
     {
-        public UserDatabaseService() : base()
+
+        private static UserDatabaseService Instance { get; set; }
+
+        public static UserDatabaseService GetInstance()
+        {
+            if (Instance == null)
+                Instance = new UserDatabaseService();
+            return Instance;
+        }
+
+        private UserDatabaseService() : base()
         {
             Console.WriteLine("UserDatabaseService Created");
         }
