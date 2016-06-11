@@ -12,7 +12,7 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
-            UserDatabaseService.UserDatabaseService uds = new UserDatabaseService.UserDatabaseService();
+            UserDatabaseService.UserDatabaseService uds = UserDatabaseService.UserDatabaseService.GetInstance();
             uds.StartService();
             Thread.Sleep(2000);
             uds.StopService();
