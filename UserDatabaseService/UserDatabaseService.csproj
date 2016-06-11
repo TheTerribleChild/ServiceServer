@@ -78,6 +78,10 @@
       <Project>{ff3a8f86-ef20-404f-89be-ba747affe272}</Project>
       <Name>BaseService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{db0b08a0-dbfe-4455-90fe-ae9c2151c089}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="UserDatabase.edmx">
