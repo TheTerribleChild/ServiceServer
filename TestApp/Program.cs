@@ -16,7 +16,6 @@ namespace TestApp
             uds.StartService();
             Thread.Sleep(2000);
             uds.StopService();
-
             Console.ReadLine();
         }
     }
