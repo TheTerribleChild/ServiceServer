@@ -11,6 +11,7 @@ namespace UserDatabaseService
 {
     public class UserDatabaseService : BaseService.BaseService
     {
+        public const string DATABASE_NAME = "UserDatabase";
 
         private static UserDatabaseService Instance { get; set; }
 
@@ -23,29 +24,37 @@ namespace UserDatabaseService
 
         private UserDatabaseService() : base()
         {
-            Console.WriteLine("UserDatabaseService Created");
+            
+        }
 
-            string dbFileName = Path.Combine(@"D:\ServiceServer\UserDatabaseService", "UserDatabase.mdf");
-            string dbName = "UserEntity";
-            Utility.DatabaseUtility.ConnectDatabase(new UserDatabaseContainer(), dbName, dbFileName);
+        public override bool SetDatabaseLocation(string databaseLocation)
+        {
+            databaseLocation = Path.Combine(databaseLocation, DATABASE_NAME + ".mdf");
+            return Utility.DatabaseUtility.ConnectDatabase(new UserDatabaseContainer(), DATABASE_NAME, databaseLocation);
+        }
+
+        public override bool StartServiceAsync()
+        {
             using (var udc = new UserDatabaseContainer())
             {
-                udc.Users.Add(new User() { Id = 1, Email = "a@gmail", PasswordHash = 123, UserName = "aaa" });
+                udc.Users.Add(new User() { Email = "a@gmail", PasswordHash = 123, UserName = "aaa" });
                 udc.SaveChanges();
             }
 
             using (var udc = new UserDatabaseContainer())
             {
                 User[] users = udc.Users.ToArray<User>();
-                foreach(User u in users)
+                foreach (User u in users)
                     Console.WriteLine(u.Id + " " + u.Email);
             }
+            return base.StartServiceAsync();
         }
 
         protected override void Do()
         {
-            Console.WriteLine("UserDatabaseService doing");
             Thread.Sleep(500);
         }
+
+
     }
 }

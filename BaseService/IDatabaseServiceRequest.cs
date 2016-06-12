@@ -8,7 +8,7 @@ namespace BaseService
 {
     public enum DatabaseModificationOperation { Add, Update, Delete };
 
-    public interface DatabaseServiceRequest
+    public interface IDatabaseServiceRequest
     {
         DatabaseModificationOperation OperationType { get; set; }
     }

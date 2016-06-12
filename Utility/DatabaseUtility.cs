@@ -11,11 +11,10 @@ namespace Utility
 {
     public static class DatabaseUtility
     {
-        public static void ConnectDatabase(DbContext context, string dbName, string dbFileName)
+        public static bool ConnectDatabase(DbContext context, string dbName, string dbFileName)
         {
             try
             {
-                Console.WriteLine("Original connection string: " + context.Database.Connection.ConnectionString);
                 string connectionString = String.Format(@"Data Source=(LocalDB)\mssqllocaldb;AttachDBFileName={1};Initial Catalog={0};Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=5", dbName, dbFileName);
                 context.Database.Connection.ConnectionString = connectionString;
                 if (!File.Exists(dbFileName))
@@ -29,13 +28,14 @@ namespace Utility
 
                     context.Database.Create();
                 }
-                Console.WriteLine("New connection string: " + context.Database.Connection.ConnectionString);
+                return true;
 
             }
             catch (System.Data.SqlClient.SqlException e)
             {
                 Console.WriteLine("Failed to create db");
                 Console.WriteLine(e.ToString());
+                return false;
             }
         }
 

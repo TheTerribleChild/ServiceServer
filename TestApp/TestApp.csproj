@@ -68,6 +68,10 @@
       <Project>{8268bcf8-76f8-4985-bfc4-ee329db75650}</Project>
       <Name>UserDatabaseService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{db0b08a0-dbfe-4455-90fe-ae9c2151c089}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

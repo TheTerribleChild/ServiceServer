@@ -13,7 +13,7 @@ namespace UserDatabaseService
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class UserDatabaseContainer : DbContext
+    internal partial class UserDatabaseContainer : DbContext
     {
         public UserDatabaseContainer()
             : base("name=UserDatabaseContainer")

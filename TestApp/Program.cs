@@ -13,9 +13,15 @@ namespace TestApp
         static void Main(string[] args)
         {
             UserDatabaseService.UserDatabaseService uds = UserDatabaseService.UserDatabaseService.GetInstance();
-            uds.StartService();
+
+
+            Console.WriteLine("UserDatabaseService Created");
+            uds.SetDatabaseLocation(@"D:\ServiceServer\UserDatabaseService");
+            
+
+            uds.StartServiceAsync();
             Thread.Sleep(2000);
-            uds.StopService();
+            uds.StopServiceAsync();
             Console.ReadLine();
 
         }

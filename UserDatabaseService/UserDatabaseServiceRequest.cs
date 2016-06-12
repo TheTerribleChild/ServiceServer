@@ -7,19 +7,8 @@ using BaseService;
 
 namespace UserDatabaseService
 {
-    public class UserDatabaseServiceRequest : BaseService.DatabaseServiceRequest
+    public class UserDatabaseServiceRequest : BaseService.IDatabaseServiceRequest
     {
-        public DatabaseModificationOperation OperationType
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public DatabaseModificationOperation OperationType { get; set; }
     }
 }
