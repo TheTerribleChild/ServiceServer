@@ -45,7 +45,7 @@ namespace UserDatabaseService
 
         private UserDatabaseService() : base()
         {
-            
+            Utility.LogUtility.Log(this, LogType.INFO, "User Database Service created");
         }
 
         public override bool SetServiceLocation(string serviceLocation)
@@ -58,19 +58,7 @@ namespace UserDatabaseService
 
         public override bool StartServiceAsync()
         {
-            using (var udc = new UserDatabaseContainer())
-            {
-                udc.Users.Add(new User() { Email = "a@gmail", PasswordHash = 123, UserName = "aaa" });
-                udc.SaveChanges();
-            }
-
-            using (var udc = new UserDatabaseContainer())
-            {
-                User[] users = udc.Users.ToArray<User>();
-                foreach (User u in users)
-                    Console.WriteLine(u.Id + " " + u.Email);
-            }
-            Utility.LogUtility.Log(this, LogType.INFO, "Service started");
+            Utility.LogUtility.Log(this, LogType.INFO, "User Database Service started");
             return true;
         }
 

@@ -68,7 +68,7 @@ namespace Utility
                         CreateLogFile(item);
                     string logLine = String.Format("{0} [Thread={1}] - {2} - {3}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss zzz"), Thread.CurrentThread.ManagedThreadId, type.ToString(), message);
 
-                    using (StreamWriter sw = File.CreateText(logLocation))
+                    using (StreamWriter sw = File.AppendText(logLocation))
                     {
                         sw.WriteLine(logLine);
                     }
