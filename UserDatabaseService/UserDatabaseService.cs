@@ -15,6 +15,14 @@ namespace UserDatabaseService
 
         private static UserDatabaseService Instance { get; set; }
 
+        public override string ServiceName
+        {
+            get
+            {
+                return "UserDatabaseService";
+            }
+        }
+
         public static UserDatabaseService GetInstance()
         {
             if (Instance == null)
@@ -27,9 +35,11 @@ namespace UserDatabaseService
             
         }
 
-        public override bool SetDatabaseLocation(string databaseLocation)
+        public override bool SetServiceLocation(string serviceLocation)
         {
-            databaseLocation = Path.Combine(databaseLocation, DATABASE_NAME + ".mdf");
+            if (!base.SetServiceLocation(serviceLocation))
+                return false;
+            string databaseLocation = Path.Combine(serviceLocation, DATABASE_NAME + ".mdf");
             return Utility.DatabaseUtility.ConnectDatabase(new UserDatabaseContainer(), DATABASE_NAME, databaseLocation);
         }
 
@@ -47,12 +57,80 @@ namespace UserDatabaseService
                 foreach (User u in users)
                     Console.WriteLine(u.Id + " " + u.Email);
             }
-            return base.StartServiceAsync();
+            return true;
         }
 
         protected override void Do()
         {
             Thread.Sleep(500);
+        }
+
+        //==================================================================
+
+        public bool AddUser(string userEmail, string userName, int passwordHash)
+        {
+            if (CurrentServiceState == ServiceState.Off)
+                return false;
+
+            bool isValid = false;
+
+            try
+            {
+                using (UserDatabaseContainer udc = new UserDatabaseContainer())
+                {
+                    isValid = true;
+                }
+            }
+            catch(Exception ex)
+            {
+                
+            }
+
+            return isValid;
+        }
+
+        public bool UpdateUser(int id)
+        {
+            if (CurrentServiceState == ServiceState.Off)
+                return false;
+
+            bool isValid = false;
+
+            try
+            {
+                using (UserDatabaseContainer udc = new UserDatabaseContainer())
+                {
+                    isValid = true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return isValid;
+        }
+
+        public bool DeleteUser(int id)
+        {
+            if (CurrentServiceState == ServiceState.Off)
+                return false;
+
+            bool isValid = false;
+
+            try
+            {
+                using (UserDatabaseContainer udc = new UserDatabaseContainer())
+                {
+                    isValid = true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return isValid;
         }
 
 

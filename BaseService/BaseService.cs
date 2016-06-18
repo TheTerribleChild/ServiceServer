@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -11,17 +12,21 @@ namespace BaseService
 
     public enum ServiceState { On, Off}
 
-    public class BaseService : INotifyPropertyChanged
+    public abstract class BaseService : INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
         private Thread _serviceThread;
         private ServiceState _currentServiceState;
+        private string _serviceLocation;
         private ManualResetEvent _serviceMRE;
+
+        public abstract string ServiceName{ get; }
 
         protected Thread ServiceThread
         {
-            get {
+            get
+            {
                 return this._serviceThread;
             }
             private set
@@ -45,6 +50,18 @@ namespace BaseService
             }
         }
 
+        public string ServiceLocation
+        {
+            get
+            {
+                return this._serviceLocation;
+            }
+            private set
+            {
+                this._serviceLocation = value;
+            }
+        }
+
         private void NotifyPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
@@ -58,12 +75,16 @@ namespace BaseService
             this.ServiceThread = null;
             this.TargetServiceState = ServiceState.Off;
             this.CurrentServiceState = ServiceState.Off;
+            this.ServiceLocation = "";
             this._serviceMRE = null;
         }
 
-        public virtual bool SetDatabaseLocation(string databaseLocation)
+        public virtual bool SetServiceLocation(string servicelLocation)
         {
-            return false;
+            if (!Directory.Exists(servicelLocation))
+                return false;
+            ServiceLocation = servicelLocation;
+            return true;
         }
 
         public virtual bool StartServiceAsync()
