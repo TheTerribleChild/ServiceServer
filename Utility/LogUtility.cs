@@ -47,7 +47,7 @@ namespace Utility
 
         private static void CreateLogFile(ILogable item)
         {
-            string logLocation = Path.Combine(_todayLogFolderLocation, item.LogName + ".log");
+            string logLocation = Path.Combine(_todayLogFolderLocation, String.Format("{0} - {1}.log", item.LogName, DateTime.Today.ToString("yyyy-MM-dd")));
             using (StreamWriter sw = File.CreateText(logLocation))
             {
                 sw.WriteLine(item.LogIntro());
@@ -59,14 +59,14 @@ namespace Utility
             if (DateTime.Today.Date != _currentDate)
                 AddTodayFolder();
 
-            lock (item)
+            lock (item.LogName)
             {
-                string logLocation = Path.Combine(_todayLogFolderLocation, item.LogName + ".log");
                 try
                 {
+                    string logLocation = Path.Combine(_todayLogFolderLocation, String.Format("{0} - {1}.log", item.LogName, DateTime.Today.ToString("yyyy-MM-dd")));
                     if (File.Exists(logLocation))
                         CreateLogFile(item);
-                    string logLine = String.Format("{0} [Thread={1}] - {2} - {3}", DateTime.Now.ToString("yyyy-MM-dd H:mm:ss zzz"), Thread.CurrentThread.ManagedThreadId, type.ToString(), message);
+                    string logLine = String.Format("{0} [Thread={1}] - {2} - {3}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss zzz"), Thread.CurrentThread.ManagedThreadId, type.ToString(), message);
 
                     using (StreamWriter sw = File.CreateText(logLocation))
                     {

@@ -16,7 +16,7 @@ namespace TestApp
 
 
             Console.WriteLine("UserDatabaseService Created");
-            uds.SetDatabaseLocation(@"D:\ServiceServer\UserDatabaseService");
+            //uds.SetDatabaseLocation(@"D:\ServiceServer\UserDatabaseService");
             
 
             uds.StartServiceAsync();

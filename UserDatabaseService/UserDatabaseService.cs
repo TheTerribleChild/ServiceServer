@@ -9,7 +9,7 @@ using Utility;
 
 namespace UserDatabaseService
 {
-    public class UserDatabaseService : BaseService.BaseService
+    public class UserDatabaseService : BaseService.BaseService, ILogable
     {
         public const string DATABASE_NAME = "UserDatabase";
 
@@ -21,6 +21,19 @@ namespace UserDatabaseService
             {
                 return "UserDatabaseService";
             }
+        }
+
+        public string LogName
+        {
+            get
+            {
+                return "UserDatabaseService";
+            }
+        }
+
+        public string LogIntro()
+        {
+            return "User Database Service";
         }
 
         public static UserDatabaseService GetInstance()
@@ -57,6 +70,7 @@ namespace UserDatabaseService
                 foreach (User u in users)
                     Console.WriteLine(u.Id + " " + u.Email);
             }
+            Utility.LogUtility.Log(this, LogType.INFO, "Service started");
             return true;
         }
 
@@ -83,7 +97,7 @@ namespace UserDatabaseService
             }
             catch(Exception ex)
             {
-                
+                Utility.LogUtility.Log(this, LogType.ERROR, "Add User Failed: " + ex.StackTrace);
             }
 
             return isValid;
@@ -105,7 +119,7 @@ namespace UserDatabaseService
             }
             catch (Exception ex)
             {
-
+                Utility.LogUtility.Log(this, LogType.ERROR, "Update User Failed: " + ex.StackTrace);
             }
 
             return isValid;
@@ -127,12 +141,10 @@ namespace UserDatabaseService
             }
             catch (Exception ex)
             {
-
+                Utility.LogUtility.Log(this, LogType.ERROR, "Delete User Failed: " + ex.StackTrace);
             }
 
             return isValid;
         }
-
-
     }
 }
