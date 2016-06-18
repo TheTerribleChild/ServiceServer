@@ -8,6 +8,6 @@ namespace Configuration
 {
     public class ServiceServerConfiguration
     {
-        public static string SERVICE_SERVER_LOCATION;
+        public static string SERVICE_SERVER_LOCATION = @"D:\ServiceServer";
     }
 }

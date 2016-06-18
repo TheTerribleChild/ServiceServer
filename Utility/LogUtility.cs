@@ -21,10 +21,12 @@ namespace Utility
     {
         private static DateTime _currentDate;
         private static string _todayLogFolderLocation;
+        private static string _sessionID;
 
         static LogUtility()
         {
             _currentDate = DateTime.Today;
+            _sessionID = (DateTime.Now.GetHashCode() + Configuration.ServiceServerConfiguration.SERVICE_SERVER_LOCATION.GetHashCode()).ToString("X");
 
             CreateLogFolder();
             AddTodayFolder();
@@ -64,9 +66,9 @@ namespace Utility
                 try
                 {
                     string logLocation = Path.Combine(_todayLogFolderLocation, String.Format("{0} - {1}.log", item.LogName, DateTime.Today.ToString("yyyy-MM-dd")));
-                    if (File.Exists(logLocation))
+                    if (!File.Exists(logLocation))
                         CreateLogFile(item);
-                    string logLine = String.Format("{0} [Thread={1}] - {2} - {3}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss zzz"), Thread.CurrentThread.ManagedThreadId, type.ToString(), message);
+                    string logLine = String.Format("{0} [ThreadID={1}] [SessionID={2}] - {3} - {4}", DateTime.Now.ToString("yyyy-MM-dd H:mm:ss:fff"), Thread.CurrentThread.ManagedThreadId, _sessionID, type.ToString(), message);
 
                     using (StreamWriter sw = File.AppendText(logLocation))
                     {

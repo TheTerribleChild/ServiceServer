@@ -12,7 +12,7 @@ namespace BaseService
 
     public enum ServiceState { On, Off}
 
-    public abstract class BaseService : INotifyPropertyChanged
+    public abstract class BaseService<T> : INotifyPropertyChanged where T: BaseService<T>, new()
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -21,7 +21,16 @@ namespace BaseService
         private string _serviceLocation;
         private ManualResetEvent _serviceMRE;
 
+        private static T _instance;
+
         public abstract string ServiceName{ get; }
+
+        public static T GetInstance()
+        {
+            if (_instance == null)
+                _instance = new T();
+            return _instance;
+        }
 
         protected Thread ServiceThread
         {

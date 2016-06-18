@@ -6,14 +6,13 @@ using System.Threading;
 using BaseService;
 using System.IO;
 using Utility;
+using System.ComponentModel;
 
 namespace UserDatabaseService
 {
-    public class UserDatabaseService : BaseService.BaseService, ILogable
+    public class UserDatabaseService : BaseService.BaseService<UserDatabaseService>, ILogable
     {
         public const string DATABASE_NAME = "UserDatabase";
-
-        private static UserDatabaseService Instance { get; set; }
 
         public override string ServiceName
         {
@@ -36,14 +35,7 @@ namespace UserDatabaseService
             return "User Database Service";
         }
 
-        public static UserDatabaseService GetInstance()
-        {
-            if (Instance == null)
-                Instance = new UserDatabaseService();
-            return Instance;
-        }
-
-        private UserDatabaseService() : base()
+        public UserDatabaseService() : base()
         {
             Utility.LogUtility.Log(this, LogType.INFO, "User Database Service created");
         }
@@ -59,6 +51,12 @@ namespace UserDatabaseService
         public override bool StartServiceAsync()
         {
             Utility.LogUtility.Log(this, LogType.INFO, "User Database Service started");
+            return true;
+        }
+
+        public override bool StopServiceAsync()
+        {
+            Utility.LogUtility.Log(this, LogType.INFO, "User Database Service stopped");
             return true;
         }
 
