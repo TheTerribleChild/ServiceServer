@@ -29,8 +29,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" Nullable="false" />
           <Property Name="Email" Type="String" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" />
           <Property Name="PasswordHash" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>

@@ -9,5 +9,7 @@ namespace Configuration
     public class ServiceServerConfiguration
     {
         public static string SERVICE_SERVER_LOCATION = @"D:\ServiceServer";
+
+        public static bool DEBUG_MODE = true;
     }
 }

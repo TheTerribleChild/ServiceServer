@@ -58,6 +58,9 @@ namespace Utility
 
         public static void Log(ILogable item, LogType type, string message)
         {
+            if (type == LogType.DEBUG && Configuration.ServiceServerConfiguration.DEBUG_MODE == false)
+                return;
+
             if (DateTime.Today.Date != _currentDate)
                 AddTodayFolder();
 

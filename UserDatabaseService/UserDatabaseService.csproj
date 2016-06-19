@@ -55,7 +55,7 @@
     <Compile Include="User.cs">
       <DependentUpon>UserDatabaseModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserEngine.cs" />
+    <Compile Include="UserQueryEngine.cs" />
     <Compile Include="UserDatabase.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
