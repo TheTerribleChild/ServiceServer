@@ -64,6 +64,10 @@
       <Project>{ff3a8f86-ef20-404f-89be-ba747affe272}</Project>
       <Name>BaseService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Configuration\Configuration.csproj">
+      <Project>{5f440fe2-85c8-40c3-8fa3-c9cdf1120e53}</Project>
+      <Name>Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UserDatabaseService\UserDatabaseService.csproj">
       <Project>{8268bcf8-76f8-4985-bfc4-ee329db75650}</Project>
       <Name>UserDatabaseService</Name>

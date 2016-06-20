@@ -16,10 +16,7 @@ namespace BaseService
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private Thread _serviceThread;
         private ServiceState _currentServiceState;
-        private string _serviceLocation;
-        private ManualResetEvent _serviceMRE;
 
         private static T _instance;
 
@@ -32,18 +29,7 @@ namespace BaseService
             return _instance;
         }
 
-        protected Thread ServiceThread
-        {
-            get
-            {
-                return this._serviceThread;
-            }
-            private set
-            {
-                this._serviceThread = value;
-            }
-        }
-
+        protected Thread ServiceThread{ get; set; }
         private ServiceState TargetServiceState { get; set; }
 
         public ServiceState CurrentServiceState
@@ -59,17 +45,7 @@ namespace BaseService
             }
         }
 
-        public string ServiceLocation
-        {
-            get
-            {
-                return this._serviceLocation;
-            }
-            private set
-            {
-                this._serviceLocation = value;
-            }
-        }
+        public string ServiceDirectory{ get; private set; }
 
         private void NotifyPropertyChanged(string propertyName)
         {
@@ -84,22 +60,21 @@ namespace BaseService
             this.ServiceThread = null;
             this.TargetServiceState = ServiceState.Off;
             this.CurrentServiceState = ServiceState.Off;
-            this.ServiceLocation = "";
-            this._serviceMRE = null;
+            this.ServiceDirectory = "";
         }
 
-        public virtual bool SetServiceLocation(string servicelLocation)
+        public virtual bool SetServiceDirectory(string servicelLocation)
         {
             if (!Directory.Exists(servicelLocation))
                 return false;
-            ServiceLocation = servicelLocation;
+            ServiceDirectory = servicelLocation;
             return true;
         }
 
         public virtual bool StartServiceAsync()
         {
             if (CurrentServiceState == ServiceState.On || TargetServiceState == ServiceState.On)
-                return false;
+                return true;
             ServiceThread = new Thread(Run);
             ServiceThread.Start();
             return true;
@@ -108,16 +83,8 @@ namespace BaseService
         public virtual bool StartService()
         {
             if (CurrentServiceState == ServiceState.On || TargetServiceState == ServiceState.On)
-                return false;
-            ServiceThread = new Thread(Run);
-            ServiceThread.Start();
-            while (CurrentServiceState != ServiceState.On) ;
-            return true;
-        }
-
-        public virtual bool StopServiceAsync()
-        {
-            TargetServiceState = ServiceState.Off;
+                return true;
+            CurrentServiceState = ServiceState.On;
             return true;
         }
 
@@ -125,8 +92,33 @@ namespace BaseService
         {
             if (TargetServiceState == ServiceState.Off)
                 return true;
+
             TargetServiceState = ServiceState.Off;
-            _serviceMRE.WaitOne();
+
+            if(ServiceThread != null && ServiceThread.IsAlive)
+            {
+                ServiceThread.Join();
+            }
+            else
+            {
+                CurrentServiceState = ServiceState.Off;
+            }
+            
+            return true;
+        }
+
+        public virtual bool StopServiceAsync()
+        {
+            if (TargetServiceState == ServiceState.Off)
+                return true;
+
+            TargetServiceState = ServiceState.Off;
+
+            if (ServiceThread == null || !ServiceThread.IsAlive)
+            {
+                CurrentServiceState = ServiceState.Off;
+            }
+
             return true;
         }
 
@@ -134,17 +126,16 @@ namespace BaseService
         {
             TargetServiceState = ServiceState.On;
             CurrentServiceState = ServiceState.On;
-            _serviceMRE = new ManualResetEvent(false);
             while (TargetServiceState == ServiceState.On)
             {
                 Do();
             }
-            _serviceMRE.Set();
             CurrentServiceState = ServiceState.Off;
         }
 
         protected virtual void Do()
         {
+            Console.WriteLine("Running Do");
             Thread.Sleep(1000);
         }
 

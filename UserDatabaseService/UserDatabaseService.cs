@@ -14,21 +14,9 @@ namespace UserDatabaseService
     {
         public const string DATABASE_NAME = "UserDatabase";
 
-        public override string ServiceName
-        {
-            get
-            {
-                return "UserDatabaseService";
-            }
-        }
+        public override string ServiceName { get; } = "UserDatabaseService";
 
-        public string LogName
-        {
-            get
-            {
-                return "UserDatabaseService";
-            }
-        }
+        public string LogName { get; } = "UserDatabaseService";
 
         public string LogIntro()
         {
@@ -39,25 +27,26 @@ namespace UserDatabaseService
         {
             Utility.LogUtility.Log(this, LogType.INFO, "User Database Service created");
         }
-
-        public override bool SetServiceLocation(string serviceLocation)
+        
+        public override bool SetServiceDirectory(string serviceLocation)
         {
-            if (!base.SetServiceLocation(serviceLocation))
+            if (!base.SetServiceDirectory(serviceLocation))
                 return false;
             string databaseLocation = Path.Combine(serviceLocation, DATABASE_NAME + ".mdf");
             return Utility.DatabaseUtility.ConnectDatabase(new UserDatabaseContainer(), DATABASE_NAME, databaseLocation);
         }
 
-        public override bool StartServiceAsync()
+        public override bool StartService()
         {
             Utility.LogUtility.Log(this, LogType.INFO, "User Database Service started");
-            return true;
+            
+            return base.StartService();
         }
 
-        public override bool StopServiceAsync()
+        public override bool StopService()
         {
             Utility.LogUtility.Log(this, LogType.INFO, "User Database Service stopped");
-            return true;
+            return base.StopService();
         }
 
         protected override void Do()

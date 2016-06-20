@@ -12,18 +12,18 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
-            UserDatabaseService.UserDatabaseService uds = UserDatabaseService.UserDatabaseService.GetInstance();
+            Configuration.ServiceServerConfiguration.LoadConfiguration();// sConfig = Configuration.ServiceServerConfiguration.GetInstance();
+            Console.WriteLine(Configuration.ServiceServerConfiguration.SERVICE_SERVER_LOCATION + " " + Configuration.ServiceServerConfiguration.DEBUG_MODE);
+            Configuration.ServiceServerConfiguration.DEBUG_MODE = false;
+            Console.WriteLine(Configuration.ServiceServerConfiguration.SERVICE_SERVER_LOCATION + " " + Configuration.ServiceServerConfiguration.DEBUG_MODE);
+            Configuration.ServiceServerConfiguration.SaveConfiguration();
 
-
-            Console.WriteLine("UserDatabaseService Created");
-            //uds.SetDatabaseLocation(@"D:\ServiceServer\UserDatabaseService");
-            
-
-            uds.StartServiceAsync();
-            Thread.Sleep(2000);
-            uds.StopServiceAsync();
+            UserDatabaseService.UserDatabaseServiceConfiguration.LoadConfiguration();// uConfig = UserDatabaseServiceConfiguration.GetInstance();
+            Console.WriteLine(UserDatabaseService.UserDatabaseServiceConfiguration.testChange);
+            UserDatabaseService.UserDatabaseServiceConfiguration.testChange = true;
+            Console.WriteLine(UserDatabaseService.UserDatabaseServiceConfiguration.testChange);
+            UserDatabaseService.UserDatabaseServiceConfiguration.SaveConfiguration();
             Console.ReadLine();
-
         }
     }
 }
