@@ -36,7 +36,7 @@ namespace UserDatabaseService
             }
             catch(Exception ex)
             {
-                Utility.LogUtility.Log(service, LogType.ERROR, "Delete User Failed: " + ex.StackTrace);
+                Utility.LogUtility.Log(service, LogType.ERROR, "Get User Failed: " + ex);
             }
 
             return returnUser;
@@ -67,7 +67,7 @@ namespace UserDatabaseService
             }
             catch (Exception ex)
             {
-                Utility.LogUtility.Log(service, LogType.ERROR, "Delete User Failed: " + ex.StackTrace);
+                Utility.LogUtility.Log(service, LogType.ERROR, "Get User Failed: " + ex);
             }
 
             return returnUser;
@@ -98,7 +98,7 @@ namespace UserDatabaseService
             }
             catch (Exception ex)
             {
-                Utility.LogUtility.Log(service, LogType.ERROR, "Delete User Failed: " + ex.StackTrace);
+                Utility.LogUtility.Log(service, LogType.ERROR, "Get User Failed: " + ex);
             }
 
             return returnUser;

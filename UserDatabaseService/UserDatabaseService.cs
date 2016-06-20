@@ -56,7 +56,7 @@ namespace UserDatabaseService
 
         //==================================================================
 
-        public bool AddUser(string email, string userName, int passwordHash)
+        public bool AddUser(string newEmail, string newUserName, int newPasswordHash)
         {
             if (CurrentServiceState == ServiceState.Off)
                 return false;
@@ -67,9 +67,9 @@ namespace UserDatabaseService
             {
                 using (UserDatabaseContainer udc = new UserDatabaseContainer())
                 {
-                    if(!udc.Users.Any(u => u.Email == email) && !udc.Users.Any(u => u.UserName == userName))
+                    if(!udc.Users.Any(u => u.Email == newEmail) && !udc.Users.Any(u => u.UserName == newUserName))
                     {
-                        User newUser = new User() { Email = email, UserName = userName, PasswordHash = passwordHash };
+                        User newUser = new User() { Email = newEmail, UserName = newUserName, PasswordHash = newPasswordHash };
                         udc.Users.Add(newUser);
                         udc.SaveChanges();
                         isValid = true;
@@ -79,13 +79,13 @@ namespace UserDatabaseService
             }
             catch(Exception ex)
             {
-                Utility.LogUtility.Log(this, LogType.ERROR, "Add User Failed: " + ex.StackTrace);
+                Utility.LogUtility.Log(this, LogType.ERROR, "Add User Failed: " + ex);
             }
 
             return isValid;
         }
 
-        public bool UpdateUser(int id, string email, string userName, int passwordHash)
+        public bool UpdateUser(int id, string newEmail, string newUserName, int newPasswordHash)
         {
             if (CurrentServiceState == ServiceState.Off)
                 return false;
@@ -97,24 +97,24 @@ namespace UserDatabaseService
                 using (UserDatabaseContainer udc = new UserDatabaseContainer())
                 {
                     User userById = udc.Users.FirstOrDefault<User>(u => u.Id == id);
-                    User userByEmail = udc.Users.FirstOrDefault<User>(u => u.Email == email);
-                    User userByUserName = udc.Users.FirstOrDefault<User>(u => u.UserName == userName);
+                    User userByEmail = udc.Users.FirstOrDefault<User>(u => u.Email == newEmail);
+                    User userByUserName = udc.Users.FirstOrDefault<User>(u => u.UserName == newUserName);
 
                     if (userById != null)
                     {
                         if(userByEmail != null && userById.Id != userByEmail.Id)
                         {
-                            Utility.LogUtility.Log(this, LogType.INFO, String.Format("Updated User[ID={0}] Failed: Email[email={1}] already exists", userById.Id, email));
+                            Utility.LogUtility.Log(this, LogType.INFO, String.Format("Updated User[ID={0}] Failed: Email[newEmail={1}] already exists", userById.Id, newEmail));
                         }
                         else if(userByUserName != null && userById.Id != userByUserName.Id)
                         {
-                            Utility.LogUtility.Log(this, LogType.INFO, String.Format("Updated User[ID={0}] Failed: User Name[UserName={1}] already exists", userById.Id, userName));
+                            Utility.LogUtility.Log(this, LogType.INFO, String.Format("Updated User[ID={0}] Failed: User Name[UserName={1}] already exists", userById.Id, newUserName));
                         }
                         else
                         {
-                            userById.Email = email;
-                            userById.UserName = userName;
-                            userById.PasswordHash = passwordHash;
+                            userById.Email = newEmail;
+                            userById.UserName = newUserName;
+                            userById.PasswordHash = newPasswordHash;
                             udc.SaveChanges();
                             isValid = true;
                             Utility.LogUtility.Log(this, LogType.INFO, String.Format("Updated User{{0}, {1}, {2}}", userById.Id, userById.Email, userById.UserName));
@@ -129,13 +129,13 @@ namespace UserDatabaseService
             }
             catch (Exception ex)
             {
-                Utility.LogUtility.Log(this, LogType.ERROR, "Update User Failed: " + ex.StackTrace);
+                Utility.LogUtility.Log(this, LogType.ERROR, "Update User Failed: " + ex);
             }
 
             return isValid;
         }
 
-        public bool UpdateUserEmail(int id, string email)
+        public bool UpdateUserEmail(int id, string newEmail)
         {
             if (CurrentServiceState == ServiceState.Off)
                 return false;
@@ -147,17 +147,17 @@ namespace UserDatabaseService
                 using (UserDatabaseContainer udc = new UserDatabaseContainer())
                 {
                     User userById = udc.Users.FirstOrDefault<User>(u => u.Id == id);
-                    User userByEmail = udc.Users.FirstOrDefault<User>(u => u.Email == email);
+                    User userByEmail = udc.Users.FirstOrDefault<User>(u => u.Email == newEmail);
 
                     if (userById != null)
                     {
                         if (userByEmail != null && userById.Id != userByEmail.Id)
                         {
-                            Utility.LogUtility.Log(this, LogType.INFO, String.Format("Updated User Email[ID={0}] Failed: Email[email={1}] already exists", userById.Id, email));
+                            Utility.LogUtility.Log(this, LogType.INFO, String.Format("Updated User Email[ID={0}] Failed: Email[newEmail={1}] already exists", userById.Id, newEmail));
                         }
                         else
                         {
-                            userById.Email = email;
+                            userById.Email = newEmail;
                             udc.SaveChanges();
                             isValid = true;
                             Utility.LogUtility.Log(this, LogType.INFO, String.Format("Updated User Email{{0}, {1}, {2}}", userById.Id, userById.Email, userById.UserName));
@@ -172,13 +172,13 @@ namespace UserDatabaseService
             }
             catch (Exception ex)
             {
-                Utility.LogUtility.Log(this, LogType.ERROR, "Update User Failed: " + ex.StackTrace);
+                Utility.LogUtility.Log(this, LogType.ERROR, "Update User Failed: " + ex);
             }
 
             return isValid;
         }
 
-        public bool UpdateUserName(int id, string userName)
+        public bool UpdateUserName(int id, string newUserName)
         {
             if (CurrentServiceState == ServiceState.Off)
                 return false;
@@ -190,17 +190,17 @@ namespace UserDatabaseService
                 using (UserDatabaseContainer udc = new UserDatabaseContainer())
                 {
                     User userById = udc.Users.FirstOrDefault<User>(u => u.Id == id);
-                    User userByUserName = udc.Users.FirstOrDefault<User>(u => u.UserName == userName);
+                    User userByUserName = udc.Users.FirstOrDefault<User>(u => u.UserName == newUserName);
 
                     if (userById != null )
                     {
                         if (userByUserName != null && userById.Id != userByUserName.Id)
                         {
-                            Utility.LogUtility.Log(this, LogType.INFO, String.Format("Updated User[ID={0}] Failed: User Name[UserName={1}] already exists", userById.Id, userName));
+                            Utility.LogUtility.Log(this, LogType.INFO, String.Format("Updated User[ID={0}] Failed: User Name[UserName={1}] already exists", userById.Id, newUserName));
                         }
                         else
                         {
-                            userById.UserName = userName;
+                            userById.UserName = newUserName;
                             udc.SaveChanges();
                             isValid = true;
                             Utility.LogUtility.Log(this, LogType.INFO, String.Format("Updated User Name{{0}, {1}, {2}}", userById.Id, userById.Email, userById.UserName));
@@ -214,13 +214,13 @@ namespace UserDatabaseService
             }
             catch (Exception ex)
             {
-                Utility.LogUtility.Log(this, LogType.ERROR, "Update User Failed: " + ex.StackTrace);
+                Utility.LogUtility.Log(this, LogType.ERROR, "Update User Failed: " + ex);
             }
 
             return isValid;
         }
 
-        public bool UpdateUserPassword(int id, int passwordHash)
+        public bool UpdateUserPassword(int id, int newPasswordHash)
         {
             if (CurrentServiceState == ServiceState.Off)
                 return false;
@@ -234,7 +234,7 @@ namespace UserDatabaseService
                     User userById = udc.Users.FirstOrDefault<User>(u => u.Id == id);
                     if (userById != null)
                     {
-                        userById.PasswordHash = passwordHash;
+                        userById.PasswordHash = newPasswordHash;
                         udc.SaveChanges();
                         isValid = true;
                         Utility.LogUtility.Log(this, LogType.INFO, String.Format("Updated User Password{{0}, {1}, {2}}", userById.Id, userById.Email, userById.UserName));
@@ -247,7 +247,7 @@ namespace UserDatabaseService
             }
             catch (Exception ex)
             {
-                Utility.LogUtility.Log(this, LogType.ERROR, "Update User Failed: " + ex.StackTrace);
+                Utility.LogUtility.Log(this, LogType.ERROR, "Update User Failed: " + ex);
             }
 
             return isValid;
@@ -280,7 +280,7 @@ namespace UserDatabaseService
             }
             catch (Exception ex)
             {
-                Utility.LogUtility.Log(this, LogType.ERROR, "Delete User Failed: " + ex.StackTrace);
+                Utility.LogUtility.Log(this, LogType.ERROR, "Delete User Failed: " + ex);
             }
 
             return isValid;
