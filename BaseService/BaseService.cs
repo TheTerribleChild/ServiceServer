@@ -66,7 +66,8 @@ namespace BaseService
         public virtual bool SetServiceDirectory(string servicelLocation)
         {
             if (!Directory.Exists(servicelLocation))
-                return false;
+                Directory.CreateDirectory(servicelLocation);
+
             ServiceDirectory = servicelLocation;
             return true;
         }
